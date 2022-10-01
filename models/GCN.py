@@ -79,4 +79,4 @@ class edge_probability_model(torch.nn.Module): # Predicts probability of edge ty
         self.fc5 = nn.Linear()
 
 
-class edge_type_model(torch.nn.Module):
+# class edge_type_model(torch.nn.Module):
