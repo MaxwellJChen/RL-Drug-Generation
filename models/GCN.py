@@ -34,7 +34,7 @@ class edge_exists_predictor(torch.nn.Module):
         x = self.output(x)
         return x
 
-class edge_value_predictor(torch.nn.Module):
+# class edge_value_predictor(torch.nn.Module):
 
 
 
@@ -68,7 +68,7 @@ class termination_predictor(torch.nn.Module): # Predicts probability of terminat
         return x
 
 
-class termination_model(torch.nn.Module):
+# class termination_model(torch.nn.Module):
 
 class edge_probability_model(torch.nn.Module): # Predicts probability of edge type existing between nodes
     def __init__(self, final_node_embedding):
