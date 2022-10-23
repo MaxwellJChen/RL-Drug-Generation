@@ -18,7 +18,7 @@ import methods
 
 z_smiles = pd.read_csv('/Users/maxwellchen/Desktop/Drug_Design/Data/ZINC_in_vitro/in-vitro.csv')
 z_smiles = z_smiles["smiles"].to_numpy()
-print(len(z_smiles))
+# print(len(z_smiles))
 
 
 
@@ -99,6 +99,31 @@ np.save(f'heavy_atoms', [heavy_atoms, h_numbers])
 # charge2 = np.load("/Users/maxwellchen/PycharmProjects/Drug_Design/RL-Drug-Generation/preprocessing/charges2.npy")
 # charge3 = np.load("/Users/maxwellchen/PycharmProjects/Drug_Design/RL-Drug-Generation/preprocessing/charges3.npy")
 
+charges = np.load('/Users/maxwellchen/PycharmProjects/Drug_Design/RL-Drug-Generation/preprocessing/charges.npy')
+elements = np.load('/Users/maxwellchen/PycharmProjects/Drug_Design/RL-Drug-Generation/preprocessing/elements.npy')
+heavy = np.load('/Users/maxwellchen/PycharmProjects/Drug_Design/RL-Drug-Generation/preprocessing/heavy_atoms.npy')
+total = np.load('/Users/maxwellchen/PycharmProjects/Drug_Design/RL-Drug-Generation/preprocessing/total_atoms.npy')
+
+"""
+stats = ""
+numbers = ""
+
+for i in range(np.shape(total)[1]):
+    stats += f'{(total[0, i])} '
+    numbers += f'{(total[1, i])} '
+print(stats)
+print(numbers)
+"""
+number_list = total[0].tolist()
+
+number_list.sort()
+numbers = []
+
+# for atom_number in asdf:
+#     idx = total[0].index(idf)
+#     numbers.append(total[1, idx])
+for i in number_list:
+    print(i)
 
 
 """Use Embedding Methods to Embed SMILES into Graphs"""
