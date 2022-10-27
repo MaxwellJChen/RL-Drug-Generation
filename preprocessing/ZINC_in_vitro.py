@@ -1,26 +1,32 @@
 """Convert ZINC_in_vitro SMILES into simply embedded graphs"""
 
+# Pytorch
 import torch
 import torch_geometric
 from torch_geometric.datasets import QM9, ZINC
 from torch_geometric.nn import NNConv, global_add_pool
 import torch.nn.functional as F
 import torch.nn as nn
-import numpy as np
+from torch_geometric.data import Data
+from torch_geometric.utils.convert import to_networkx, from_networkx
+
+# Rdkit
 from rdkit import Chem
 from rdkit.Chem.rdmolops import GetAdjacencyMatrix
-from torch_geometric.data import Data
-import pandas as pd
-import pickle
 from rdkit.Chem.rdmolops import GetFormalCharge
 
+# Other
+import pandas as pd
+import numpy as np
+import pickle
+import networkx as nx
 import methods
+import matplotlib.pyplot as plt
+
 
 z_smiles = pd.read_csv('/Users/maxwellchen/Desktop/Drug_Design/Data/ZINC_in_vitro/in-vitro.csv')
 z_smiles = z_smiles["smiles"].to_numpy()
-# print(len(z_smiles))
-
-
+print(np.shape(z_smiles))
 
 """
 Save Data about the Molecular Distribution
@@ -91,39 +97,25 @@ np.save(f'total_atoms', [total_atoms, t_numbers])
 np.save(f'heavy_atoms', [heavy_atoms, h_numbers])
 """
 
-"""Combine Saved Molecular Data"""
-# Charges
-# charge = []
-# c_number = []
-# charge1 = np.load("/Users/maxwellchen/PycharmProjects/Drug_Design/RL-Drug-Generation/preprocessing/charges1.npy")
-# charge2 = np.load("/Users/maxwellchen/PycharmProjects/Drug_Design/RL-Drug-Generation/preprocessing/charges2.npy")
-# charge3 = np.load("/Users/maxwellchen/PycharmProjects/Drug_Design/RL-Drug-Generation/preprocessing/charges3.npy")
+"""
+Compute Graphs for In-Vitro Data
+"""
 
-charges = np.load('/Users/maxwellchen/PycharmProjects/Drug_Design/RL-Drug-Generation/preprocessing/charges.npy')
-elements = np.load('/Users/maxwellchen/PycharmProjects/Drug_Design/RL-Drug-Generation/preprocessing/elements.npy')
-heavy = np.load('/Users/maxwellchen/PycharmProjects/Drug_Design/RL-Drug-Generation/preprocessing/heavy_atoms.npy')
-total = np.load('/Users/maxwellchen/PycharmProjects/Drug_Design/RL-Drug-Generation/preprocessing/total_atoms.npy')
+z_smiles = np.unique(z_smiles)
+# True total of 306253 smiles/molecules
 
 """
-stats = ""
-numbers = ""
-
-for i in range(np.shape(total)[1]):
-    stats += f'{(total[0, i])} '
-    numbers += f'{(total[1, i])} '
-print(stats)
-print(numbers)
+0 – 0:50000
+1 – 50000:100000
+2 – 100000:150000
+3 – 150000:200000
+4 – 200000:250000
+5 – 250000:306253
 """
-number_list = total[0].tolist()
 
-number_list.sort()
-numbers = []
+n = 5
 
-# for atom_number in asdf:
-#     idx = total[0].index(idf)
-#     numbers.append(total[1, idx])
-for i in number_list:
-    print(i)
+graphs = methods.graph_from_smiles(z_smiles[250000:306253])
 
-
-"""Use Embedding Methods to Embed SMILES into Graphs"""
+with open(f'zinc_graphs_{n}', 'wb') as file:
+    pickle.dump(graphs, file)

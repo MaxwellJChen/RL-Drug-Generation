@@ -13,6 +13,7 @@ from torch_geometric.data import Data
 import pandas as pd
 import pickle
 
+"""Element Analysis"""
 def split_formula(smiles):  # Split formula into a list of units, account for charge as well
     mol = Chem.MolFromSmiles(smiles)
     formula = CalcMolFormula(mol)
@@ -109,6 +110,8 @@ def find_element_distribution_from_smiles(smiles):
         number.append(int(f[i + 1]))
     return element, number
 
+
+"""Embedding Methods"""
 def one_hot_encoding(x, permitted_list):
     """
     Maps input elements x which are not in the permitted list to the last element
@@ -131,9 +134,7 @@ def get_atom_features(atom,
 
     # define list of permitted atoms
 
-    permitted_list_of_atoms = ['C', 'N', 'O', 'S', 'F', 'Si', 'P', 'Cl', 'Br', 'Mg', 'Na', 'Ca', 'Fe', 'As', 'Al', 'I',
-                               'B', 'V', 'K', 'Tl', 'Yb', 'Sb', 'Sn', 'Ag', 'Pd', 'Co', 'Se', 'Ti', 'Zn', 'Li', 'Ge',
-                               'Cu', 'Au', 'Ni', 'Cd', 'In', 'Mn', 'Zr', 'Cr', 'Pt', 'Hg', 'Pb', 'Unknown']
+    permitted_list_of_atoms = ['C', 'Cl', 'N', 'O', 'Br', 'S', 'P', 'F', 'I', 'B', 'Si', 'Sn', 'Unknown']
 
     if hydrogens_implicit == False:
         permitted_list_of_atoms = ['H'] + permitted_list_of_atoms
@@ -212,10 +213,10 @@ def graph_from_smiles(x_smiles):
 
     data_list = []
 
-    for smiles in x_smiles:
-
+    for i in range(len(x_smiles)):
+        print(i)
         # convert SMILES to RDKit mol object
-        mol = Chem.MolFromSmiles(smiles)
+        mol = Chem.MolFromSmiles(x_smiles[i])
         # get feature dimensions
         n_nodes = mol.GetNumAtoms()
         n_edges = 2 * mol.GetNumBonds()
