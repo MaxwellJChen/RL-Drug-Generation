@@ -26,17 +26,11 @@ class edge_exists_predictor(torch.nn.Module):
         # Global pooling into 1D vector
         x = global_add_pool(x, batch)
 
-        #
-
         x = self.fc1(x)
         x = self.fc2(x)
         x = self.fc3(x)
         x = self.output(x)
         return x
-
-# class edge_value_predictor(torch.nn.Module):
-
-
 
 class termination_predictor(torch.nn.Module): # Predicts probability of termination
     # Operates on global node vector
@@ -67,9 +61,6 @@ class termination_predictor(torch.nn.Module): # Predicts probability of terminat
 
         return x
 
-
-# class termination_model(torch.nn.Module):
-
 class edge_probability_model(torch.nn.Module): # Predicts probability of edge type existing between nodes
     def __init__(self, final_node_embedding):
         self.fc1 = nn.Linear(2*final_node_embedding, 256)
@@ -77,6 +68,3 @@ class edge_probability_model(torch.nn.Module): # Predicts probability of edge ty
         self.fc3 = nn.Linear(512, 256)
         self.fc4 = nn.Linear(256, 128)
         self.fc5 = nn.Linear()
-
-
-# class edge_type_model(torch.nn.Module):
