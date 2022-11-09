@@ -4,7 +4,7 @@ Sequential graph attention model optimized with reinforcement learning for molec
 ISEF 2023
 
 ## Models
-GCN, GAT, GATv2 class implementations
+Three-Part Sequential GCN Generator
 
 ## Preprocessing
 Data analysis on ChEMBLdb 31 and ZINC15 in vitro
